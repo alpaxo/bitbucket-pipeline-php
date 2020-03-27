@@ -3,6 +3,8 @@ FROM php:7.2-fpm
 WORKDIR /
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 8.10.0
 
 RUN apt-get update -qq
 RUN apt-get install --no-install-recommends -qy apt-transport-https libmcrypt-dev zlib1g-dev sudo zlib1g-dev libidn11-dev curl libcurl4 \
@@ -13,11 +15,13 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 RUN docker-php-ext-install -j$(nproc) mbstring opcache pdo pdo_mysql gettext iconv tidy gd bcmath iconv zip pcntl gmp intl xsl
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php --install-dir=/usr/local/bin --filename=composer
-#RUN mv composer.phar /usr/local/bin/composer && composer self-update
 
 RUN ln -s /app/artisan /usr/local/bin/artisan
 
-# install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN sudo apt-get update -qq && apt-get install -v yarn
+RUN mkdir $NVM_DIR
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+RUN . $NVM_DIR/nvm.sh \
+        && nvm install $NODE_VERSION \
+        && nvm alias default $NODE_VERSION \
+        && nvm use default \
+        && npm install -g yarn
