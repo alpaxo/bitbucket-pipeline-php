@@ -24,5 +24,5 @@ RUN . $NVM_DIR/nvm.sh \
         && nvm install $NODE_VERSION \
         && nvm alias default $NODE_VERSION \
         && nvm use default \
-        && npm i npm@latest -g
+        && npm i npm@latest -g \
         && npm install -g yarn
