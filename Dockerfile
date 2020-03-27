@@ -4,7 +4,7 @@ WORKDIR /
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 8.10.0
+ENV NODE_VERSION 12.16.1
 
 RUN apt-get update -qq
 RUN apt-get install --no-install-recommends -qy apt-transport-https libmcrypt-dev zlib1g-dev sudo zlib1g-dev libidn11-dev curl libcurl4 \
@@ -24,4 +24,5 @@ RUN . $NVM_DIR/nvm.sh \
         && nvm install $NODE_VERSION \
         && nvm alias default $NODE_VERSION \
         && nvm use default \
+        && npm i npm@latest -g
         && npm install -g yarn
