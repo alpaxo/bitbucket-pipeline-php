@@ -15,7 +15,7 @@ RUN apt-get install --no-install-recommends -qy apt-transport-https libmcrypt-de
     libpcre3-dev libcurl4-openssl-dev libevent-dev wget git ssh libicu-dev libxml2 libxml2-dev gnupg libtidy-dev libgmp-dev \
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev libxslt1-dev libxslt1.1
 
-RUN docker-php-ext-configure gd
+RUN docker-php-ext-configure gd --enable-gd --with-jpeg
 RUN docker-php-ext-install -j$(nproc) opcache pdo pdo_mysql gettext iconv tidy gd bcmath iconv zip pcntl gmp intl xsl
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
